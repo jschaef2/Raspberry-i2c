@@ -1,0 +1,91 @@
+unsigned int L_QUAD_PHASE = 0;
+unsigned int R_QUAD_PHASE = 0;
+unsigned int INPUT_DISTANCE;
+unsigned int RIGHT_TEST;
+unsigned int LAST_RIGHT_TEST;
+unsigned int LEFT_TEST;
+unsigned int LAST_LEFT_TEST;
+
+INPUT_DISTANCE = 12 *(25);
+while( (L_QUAD_PHASE < INPUT_DISTANCE) | (R_QUAD_PHASE < INPUT_DISTANCE))
+	{
+		if(R_QUAD_PHASE == L_QUAD_PHASE)
+		{
+			INP_GPIO(22) = INP_GPIO(22) |  0b11000100;
+			//TIME
+			IN_GPIO(22) = 0BB00000000;
+			
+			LAST_RIGHT_TEST = RIGHT_TEST
+			RIGHT_TEST = INP_GPIO(21) &  0b00000011;	
+
+				If(RIGHT_TEST  ! = LAST_RIGHT_TEST)
+				{
+				R_QUAD_PHASE++;
+				}
+				
+			LAST_LEFT_TEST = LEFT_TEST;
+			LEFT_TEST = INP_GPIO(21) & 0b00110000;
+			LEFT_TEST = LEFT_TEST >> 4;
+			
+				If(LEFT_TEST != LAST_LEFT_TEST)
+				{
+					L_QUAD_PHASE++;
+				}
+		}
+
+		if(R_QUAD_PHASE < L_QUAD_PHASE)
+		{
+					
+			INP_GPIO(22) = INP_GPIO(22) |  0b00000100;
+			//TIME
+			IN_GPIO(22) = 0b00000000;
+			//TIME
+			INP_GPIO(22) = INP_GPIO(22) & 0b00000100;
+			
+			LAST_RIGHT_TEST = RIGHT_TEST;
+			RIGHT_TEST = INP_GPIO(21) &  0b00000011;	
+
+				If(RIGHT_TEST  ! = LAST_RIGHT_TEST)
+				{
+				R_QUAD_PHASE++;
+				}
+				
+			LAST_LEFT_TEST = LEFT_TEST;
+			LEFT_TEST = INP_GPIO(21) & 0b00110000;
+			LEFT_TEST = LEFT_TEST >> 4;
+			
+				If(LEFT_TEST != LAST_LEFT_TEST)
+				{
+					L_QUAD_PHASE++;
+				}
+		}
+
+		if(R_QUAD_PHASE < L_QUAD_PHASE)
+		{
+					
+			INP_GPIO(22) = INP_GPIO(22) |  0b11000000;
+			//TIME
+			IN_GPIO(22) = 0b00000000;
+			//TIME
+			INP_GPIO(22) = INP_GPIO(22) & 0b11000000;
+			
+			LAST_RIGHT_TEST = RIGHT_TEST
+			RIGHT_TEST = INP_GPIO(21) &  0b00000011;	
+
+				If(RIGHT_TEST  ! = LAST_RIGHT_TEST)
+				{
+				R_QUAD_PHASE++;
+				}
+				
+			LAST_LEFT_TEST = LEFT_TEST;
+			LEFT_TEST = INP_GPIO(21) & 0b00110000;
+			LEFT_TEST = LEFT_TEST >> 4;
+			
+				If(LEFT_TEST != LAST_LEFT_TEST)
+				{
+					L_QUAD_PHASE++;
+				}
+		}
+}
+INP_GPIO(22) = INP_GPIO(22) & 0b00000000;		 
+	
