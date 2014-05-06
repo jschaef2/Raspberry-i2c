@@ -30,5 +30,6 @@ void lSensorTest(int gpio1, int gpio2);
 void forward(int ticks);
 void lTurn(int ticks);
 void rTurn(int ticks);
+void stop();
 
 #endif
