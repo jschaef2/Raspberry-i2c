@@ -1,3 +1,4 @@
+
 #include <wiringPiI2C.h>
 #include <stdio.h>
 #include <wiringPi.h>
@@ -6,10 +7,13 @@
 
 int main()
 {
-  int fd = wiringPiI2CSetup(0x29); //0x29 is determined by i2cdetect -y 1#
+  wiringPiSetupGpio();
+
+  int mfd = wiringPiI2CSetup(0x71); //0x29 is determined by i2cdetect -y 1#
+  int fd = wiringPiI2CSetup(0x29);
   int loop;
 
-  if(fd >= 0) {
+  if(mfd >= 0 && fd >= 0) {
     loop = 1;
   } else {
     loop = 0;
