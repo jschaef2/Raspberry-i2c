@@ -1,1 +1,4 @@
+git status
+git add <file name>
+git commit -m "Name the commit"
 git push origin master
