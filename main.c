@@ -10,15 +10,23 @@ int main() {
 	pinMode(RSA, INPUT); //Right Sensor A
 	pinMode(LSB, INPUT); //Left Sensor B
 	pinMode(RSB, INPUT); //Right Sensor B
-/*	while(1) {
+
+	//--------MOTOR TESTING--------
+	/*	while(1) {
 		rSensorTest(RSA, RSB);
 		delay(100);
-	}*/
+	}
 	forward(75);
 	delay(3000);
 	rTurn(133);
 	delay(3000);
 	lTurn(133);
 	delay(3000); 
-	stop();
+	stop(); */
+	
+	//-------PROX TESTING-----------
+	while(1) {
+		int prox = readProx();
+		printf("%d\n", prox);
+	}
 }

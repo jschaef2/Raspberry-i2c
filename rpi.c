@@ -184,7 +184,41 @@ void stop() {
 	digitalWrite(LE, 0);
 }
 
+int readProx() {
+//  int mfd = wiringPiI2CSetup(0x71); //0x72 is multiplexer channel 1
+  int fd = wiringPiI2CSetup(0x13); //0x13 is determined by i2cdetect -y 1
+ // wiringPiSetup();
+  int loop;
+  int pin = 0;
+  wiringPiI2CWriteReg8(fd, 0x80, 0xa8);
 
+  if(fd >= 0) {
+    loop = 1;
+  } else {
+    loop = 0;
+  }
+
+  int ver = wiringPiI2CReadReg8(fd, 0x81);
+  printf("version:%d\n", ver);
+  if(ver == 0x11) {
+    printf("Device found\n");
+    //wiringPiI2CWriteReg8(fd, 0x03, 0x08); //Should increase range of the sensor
+    pinMode(LED, OUTPUT);
+    digitalWrite(LED, 1);
+    while(loop == 1) {
+		wiringPiI2CWriteReg8(fd, 0x80, 0xa8);
+		int lowByte = wiringPiI2CReadReg8(fd, 0x88);
+		int highByte = wiringPiI2CReadReg8(fd, 0x87);
+		int reading = (highByte << 8) | lowByte;
+		//printf("%d\n",reading);
+		return reading;
+		delay(30);
+    }
+  } else {
+    //printf("Device not found\n");
+	return -1;
+  }
+}
 
 
 
