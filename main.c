@@ -21,27 +21,32 @@ int main() {
 	pinMode(RSB, INPUT); //Right Sensor B
 
 	//PHASE 1 (CLAIM THE FIRST BEACON)
-	while(1) {
+	while(millis() < 6000) {
 		if(lightAvg(lfd, 0) > 25) { //Activate
-			while((lightAvg(lfd, 0) < MAGIC_CLEAR) || (lightAvg(lfd, TEAM) < MAGIC_TEAM)) {
+			int clearAvg = lightAvg(lfd, 0);
+			int teamAvg = lightAvg(lfd, TEAM);
+			printf("Clear avg: %d Team avg: %d\n", clearAvg, teamAvg);
+			while((clearAvg < MAGIC_CLEAR) && (teamAvg < MAGIC_TEAM)) {
 				digitalWrite(LE, 1);
 				digitalWrite(RE, 1);
 				digitalWrite(LD, 1);
-				digitalWrite(RD, 0);
+				digitalWrite(RD, 1);
+//				printf("clear: %d red: %d green: %d\n", readClear(lfd), readRed(lfd), readGreen(lfd));
 			}
 			stop();
 			delay(WAIT);
+			printf("Forward\n");
 			forward(75);
-			stop();
-			delay(WAIT);
 			int proxCheck = evalProx(pfd);
 			if(proxCheck == 0) {
 //				int tag = claim();
-				int proceed = avoid();
+				int proceed = avoid(pfd);
 				while(proceed == 0) {
-					proceed = avoid();
+					printf("avoid\n");
+					proceed = avoid(pfd);
 				}
 			}		
 		}
 	}
+	stop();
 }

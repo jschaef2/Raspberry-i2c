@@ -301,7 +301,7 @@ int lightAvg(int fd, int color) {
 				reading += readClear(fd);
 				delay(25);
 			}
-			avergae = reading / 30;
+			average = reading / 30;
 			return average;
 		} else if(color == 1) {
 			for(i; i < 30; i++) {
