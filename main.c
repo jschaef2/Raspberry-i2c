@@ -25,8 +25,20 @@ int main() {
 	stop(); */
 	
 	//-------PROX TESTING-----------
+	system("i2cset -y 1 0x70 0xe3 0x01");
+	system("i2cset -y 1 0x70 0x83 0x0a");
+	int fd = wiringPiI2CSetup(0x13); //0x13 is determined by i2cdetect -y 1
+  	wiringPiI2CWriteReg8(fd, 0x80, 0xa8);
 	while(1) {
-		int prox = readProx();
-		printf("%d\n", prox);
+		int i = 0;
+		int prox = readProx(fd);
+		for(i; i < 30; i++) {
+			prox += readProx(fd);
+			delay(15);
+		}
+		int average = prox / 30;
+		prox = 0;
+		printf("%d\n", average);
+		average = 0;
 	}
 }

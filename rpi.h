@@ -31,6 +31,6 @@ void forward(int ticks);
 void lTurn(int ticks);
 void rTurn(int ticks);
 void stop();
-int readProx();
+int readProx(int fd);
 
 #endif
