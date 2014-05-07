@@ -30,15 +30,29 @@ int main() {
 	int fd = wiringPiI2CSetup(0x13); //0x13 is determined by i2cdetect -y 1
   	wiringPiI2CWriteReg8(fd, 0x80, 0xa8);
 	while(1) {
-		int i = 0;
-		int prox = readProx(fd);
-		for(i; i < 30; i++) {
-			prox += readProx(fd);
-			delay(15);
+		int avgProx = proxAvg(fd);
+		printf("%d\n", avgProx);
+		if(avgProx < 2170) {
+			forward(75);
+			stop();
+			delay(25);
 		}
-		int average = prox / 30;
-		prox = 0;
-		printf("%d\n", average);
-		average = 0;
+		avgProx = proxAvg(fd);
+		printf("%d\n", avgProx);
+		if(avgProx >= 2170) {
+			rTurn(133);
+			delay(25);
+			avgProx = proxAvg(fd);
+			printf("%d\n", avgProx);
+			if(avgProx < 2170) {
+				forward(75);
+				stop();
+			} else {
+				lTurn(133);
+				delay(25);
+				lTurn(133);
+				delay(25);
+			}
+		}
 	}
 }
