@@ -85,6 +85,7 @@ void forward(int ticks) {
 		}
 	}
 	stop();
+	delay(WAIT);
 }
 
 void lTurn(int ticks) {
@@ -131,6 +132,7 @@ void lTurn(int ticks) {
 		}
 	}
 	stop();
+	delay(WAIT);
 }
 
 void rTurn(int ticks) {
@@ -177,6 +179,7 @@ void rTurn(int ticks) {
 		}
 	}
 	stop();
+	delay(WAIT);
 }
 
 void stop() {
@@ -217,7 +220,114 @@ int proxAvg(int fd) {
 	return average;
 }
 
+int evalProx(int fd) {
+	int reading = proxAvg(fd);
+	if(reading < GO) {
+		return 1;
+	} else {
+		return 0;
+	}
+}
 
+int avoid(int fd) {
+	rTurn(133);
+	int reading = evalProx(fd);
+	if(evalProx(fd) == 1) {
+		forward(75);
+		lTurn(133);
+		if(evalProx(fd) == 1) {
+			return 1;
+		} else {
+			return 0;
+		}
+	} else {
+		lTurn(133);
+		lTurn(133);
+		if(evalProx(fd) == 1) {
+			forward(75);
+			if(evalProx(fd) == 1) {
+				return 1;
+			} else {
+				return 0;
+			}
+		} else {
+			return 0;
+		}
+	}
+}
+
+int readClear(int fd) {		
+	wiringPiI2CWrite(fd, 0x80 | 0x14);
+	int clearLow = wiringPiI2CReadReg8(fd, 0x14);
+	wiringPiI2CWrite(fd, 0x80 | 0x15);
+	int clearHigh = wiringPiI2CReadReg8(fd, 0x15);
+	int clear = (clearHigh << 8) | clearLow;
+	//printf("clear: %d", clear);
+	return clear;
+}
+
+int readRed(int fd) {		
+	wiringPiI2CWrite(fd, 0x80 | 0x16);
+	int redLow = wiringPiI2CReadReg8(fd, 0x16);
+	wiringPiI2CWrite(fd, 0x80 | 0x17);
+	int redHigh = wiringPiI2CReadReg8(fd, 0x17);
+	int red = (redHigh << 8) | redLow;
+	//printf(" red: %d", red);
+	return red;
+}
+
+int readGreen(int fd) {		
+	wiringPiI2CWrite(fd, 0x80 | 0x18);
+	int greenLow = wiringPiI2CReadReg8(fd, 0x18);
+	wiringPiI2CWrite(fd, 0x80 | 0x19);
+	int greenHigh = wiringPiI2CReadReg8(fd, 0x19);
+	int green = (greenHigh << 8) | greenLow;
+	//printf(" green: %d\n", green);
+	return green;
+}
+
+int lightAvg(int fd, int color) {
+	int ver = wiringPiI2CReadReg8(fd, 0x80 | 0x12);
+	//printf("version:%d\n", ver);
+	if(ver == 0x44) {
+		//printf("Device found\n");
+		wiringPiI2CWrite(fd, 0x80 | 0x00); //Enable
+		wiringPiI2CWrite(fd, 0x01 | 0x02); //Power on
+		int i = 0;
+		int reading = 0;
+		int average = 0;
+		if(color == 0) {
+			for(i; i < 30; i++) {
+				reading += readClear(fd);
+				delay(25);
+			}
+			avergae = reading / 30;
+			return average;
+		} else if(color == 1) {
+			for(i; i < 30; i++) {
+				reading += readRed(fd);
+				delay(25);
+			}
+			average = reading / 30;
+			return average;
+		} else if(color == 2) {
+			for(i; i < 30; i++) {
+				reading += readGreen(fd);
+				delay(25);
+			}
+			average = reading / 30;
+			return average;
+		} else {
+			return -1;
+		}
+	} else {
+		return -1;
+	}
+}
+
+int claim() {
+	//Returns 1 if success, 0 if fail
+}
 
 
 

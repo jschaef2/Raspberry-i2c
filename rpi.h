@@ -13,6 +13,10 @@
 #define RSA 5
 #define LSB 6
 #define RSB 7
+#define WAIT 25
+#define GO 2170
+#define TEAM 1
+//1 means green team, 2 means red team
 
 extern unsigned int L_QUAD_PHASE;
 extern unsigned int R_QUAD_PHASE;
@@ -32,5 +36,12 @@ void lTurn(int ticks);
 void rTurn(int ticks);
 void stop();
 int readProx(int fd);
-
+int proxAvg(int fd);
+int evalProx(int fd);
+int avoid(int fd);
+int readClear(int fd);
+int readRed(int fd);
+int readGreen(int fd);
+int lightAvg(int fd, int color);
+int claim();
 #endif
