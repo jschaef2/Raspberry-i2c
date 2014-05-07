@@ -16,6 +16,8 @@
 #define WAIT 25
 #define GO 2170
 #define TEAM 1
+#define MAGIC_CLEAR 300	//subject to change
+#define MAGIC_TEAM 100
 //1 means green team, 2 means red team
 
 extern unsigned int L_QUAD_PHASE;

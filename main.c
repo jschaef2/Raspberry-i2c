@@ -22,8 +22,8 @@ int main() {
 
 	//PHASE 1 (CLAIM THE FIRST BEACON)
 	while(1) {
-		if(lightAvg(lfd, 'c') > 25) { //Activate
-			while((lightAvg(lfd, 0) < FIRST_BEACON) || (lightAvg(lfd, TEAM) < FIRST_BEACON)) {
+		if(lightAvg(lfd, 0) > 25) { //Activate
+			while((lightAvg(lfd, 0) < MAGIC_CLEAR) || (lightAvg(lfd, TEAM) < MAGIC_TEAM)) {
 				digitalWrite(LE, 1);
 				digitalWrite(RE, 1);
 				digitalWrite(LD, 1);
