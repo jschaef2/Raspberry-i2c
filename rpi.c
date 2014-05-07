@@ -204,6 +204,18 @@ int readProx(int fd) {
   }
 }
 
+int proxAvg(int fd) {
+	int i = 0;
+	int prox = readProx(fd);
+	for(i; i < 30; i++) {
+		prox += readProx(fd);
+		delay(15);
+	}
+	int average = prox / 30;
+	prox = 0;
+	//printf("%d\n", average);
+	return average;
+}
 
 
 
