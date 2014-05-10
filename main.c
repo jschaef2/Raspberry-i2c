@@ -22,16 +22,18 @@ int main() {
 
 	//PHASE 1 (CLAIM THE FIRST BEACON)
 	while(millis() < 6000) {
-		if(lightAvg(lfd, 0) > 25) { //Activate
+		if(lightAvg(lfd, 0) > 25) { //Activate			
 			int clearAvg = lightAvg(lfd, 0);
 			int teamAvg = lightAvg(lfd, TEAM);
-			printf("Clear avg: %d Team avg: %d\n", clearAvg, teamAvg);
 			while((clearAvg < MAGIC_CLEAR) && (teamAvg < MAGIC_TEAM)) {
+				printf("Clear avg: %d Team avg: %d\n", clearAvg, teamAvg);
 				digitalWrite(LE, 1);
 				digitalWrite(RE, 1);
 				digitalWrite(LD, 1);
 				digitalWrite(RD, 1);
-//				printf("clear: %d red: %d green: %d\n", readClear(lfd), readRed(lfd), readGreen(lfd));
+	//			printf("clear: %d red: %d green: %d\n", readClear(lfd), readRed(lfd), readGreen(lfd));
+				clearAvg = lightAvg(lfd, 0);
+				teamAvg = lightAvg(lfd, TEAM);
 			}
 			stop();
 			delay(WAIT);
