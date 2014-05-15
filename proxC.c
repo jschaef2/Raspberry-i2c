@@ -23,7 +23,7 @@ int main()
   printf("version:%d\n", ver);
   if(ver == 0x11) {
     printf("Device found\n");
-    //wiringPiI2CWriteReg8(fd, 0x03, 0x08); //Should increase range of the sensor
+    wiringPiI2CWriteReg8(fd, 0x83, 0x0a); //Should increase range of the sensor
     pinMode(LED, OUTPUT);
     digitalWrite(LED, 1);
     while(loop == 1) {
@@ -36,7 +36,7 @@ int main()
       } else {
 	digitalWrite(LED, 1);
       }*/
-      delay(30);
+      delay(80);
       printf("%d\n",reading);
     }
   } else {

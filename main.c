@@ -1,11 +1,12 @@
 #include "rpi.h"
+#include <stdlib.h>
 
 int main() {
 	//PROX SETUP
-	wiringPiSetup();
-	system("i2cset -y 1 0x70 0xe3 0x01"); 
-//	system("i2cset -y 1 0x70 0x83 0x0a");
+	system("sudo i2cset -y 1 0x70 0x00 0x01"); 
+/*	wiringPiSetup();
 	int pfd = wiringPiI2CSetup(0x13); //0x13 is determined by i2cdetect -y 1
+        wiringPiI2CWriteReg8(fd, 0x03, 0x08); //Should increase range of the sensor
   	wiringPiI2CWriteReg8(pfd, 0x80, 0xa8); //Get the prox ready to be read
 	
 	//LIGHT SETUP
@@ -19,7 +20,7 @@ int main() {
 	pinMode(RSA, INPUT); //Right Sensor A
 	pinMode(LSB, INPUT); //Left Sensor B
 	pinMode(RSB, INPUT); //Right Sensor B
-
+	
 	//PHASE 1 (CLAIM THE FIRST BEACON)
 	while(millis() < 6000) {
 		if(lightAvg(lfd, 0) > 25) { //Activate			
@@ -49,6 +50,6 @@ int main() {
 				}
 			}		
 		}
-	}
+	}*/
 	stop();
 }
