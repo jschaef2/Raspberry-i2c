@@ -1,6 +1,8 @@
 #ifndef __RPI_H__
 #define __RPI_H__
 
+#include <fcntl.h>
+#include <termios.h>
 #include <wiringPi.h>
 #include <wiringPiI2C.h>
 #include <stdio.h>
@@ -13,6 +15,7 @@
 #define RSA 5
 #define LSB 6
 #define RSB 7
+#define MOD 14 //38khz clock signal toggled on the basys by the pi
 #define WAIT 25
 #define GO 2170
 #define TEAM 1
@@ -45,5 +48,5 @@ int readClear(int fd);
 int readRed(int fd);
 int readGreen(int fd);
 int lightAvg(int fd, int color);
-int claim();
+int claim(int fd);
 #endif

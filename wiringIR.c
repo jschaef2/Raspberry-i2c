@@ -20,31 +20,18 @@ int main() {
 	serialFlush(fd);
 	int i = 0;
 	unsigned int x[8];
-//	for(i; i < 1000; i++) {
 	while(1) {
 		int avail = serialDataAvail(fd);
 		if(serialDataAvail(fd) > 0) {
 			unsigned int reading = serialGetchar(fd);
-/*			unsigned int count = read(fd, &x, 1);
-			unsigned int reading = ((int)x) & 0xff;*/
 			unsigned int trans = (~reading) & 0xff;
-//			delay(30);
 			printf("%u --> %u\n", reading, trans);
 			digitalWrite(0, 1);
 			delay(10);
 			serialPutchar(fd, trans);
 			delay(35);
-//			int reading = read(fd, &x, 8);
-//			printf("%d - %d\n", i, x);
-//			serialFlush(fd);
 		} 
 		digitalWrite(0, 0);
-//		serialPutchar(fd, 125); 
-//		int reading = serialGetchar(fd);
-//		int reading = read(fd, &x, 8);
-//		printf("%d\n", x);
-//		serialPutchar(fd, reading);
-//		delay(100);
 		serialFlush(fd);
 	}
 	serialClose(fd);

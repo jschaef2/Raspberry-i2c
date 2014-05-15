@@ -209,13 +209,18 @@ int readProx(int fd) {
 
 int proxAvg(int fd) {
 	int i = 0;
-	int prox = readProx(fd);
+	int prox;
 	for(i; i < 30; i++) {
-		prox += readProx(fd);
-		delay(15);
+	prox = readProx(fd);
+		if(prox != -1) {
+			sum += prox;
+		} else {
+			i = i - 1;
+		}
+		delay(5);
 	}
-	int average = prox / 30;
-	prox = 0;
+	int average = sum / 30;
+	sum = 0;
 	//printf("%d\n", average);
 	return average;
 }
@@ -299,21 +304,21 @@ int lightAvg(int fd, int color) {
 		if(color == 0) {
 			for(i; i < 30; i++) {
 				reading += readClear(fd);
-				delay(25);
+				delay(10);
 			}
 			average = reading / 30;
 			return average;
 		} else if(color == 1) {
 			for(i; i < 30; i++) {
 				reading += readRed(fd);
-				delay(25);
+				delay(10);
 			}
 			average = reading / 30;
 			return average;
 		} else if(color == 2) {
 			for(i; i < 30; i++) {
 				reading += readGreen(fd);
-				delay(25);
+				delay(10);
 			}
 			average = reading / 30;
 			return average;
@@ -325,8 +330,32 @@ int lightAvg(int fd, int color) {
 	}
 }
 
-int claim() {
-	//Returns 1 if success, 0 if fail
+int claim(int fd) {
+/*	struct termios options;
+	tcgetattr(fd, &options);
+	options.c_cflag = B300 | CS8 | CLOCAL | CREAD;
+	options.c_iflag = IGNPAR;
+	options.c_oflag = 0;
+	options.c_lflag = 0;
+	tcflush(fd, TCIFLUSH);
+	tcsetattr(fd, TCSANOW, &options); */
+	digitalWrite(MOD, 0);
+	serialFlush(fd);
+	int avail = serialDataAvail(fd);
+	if(avail > 0) {
+		unsigned int reading = serialGetchar(fd);
+		unsigned int trans = (~reading) & 0xff;
+		printf("%u --> %u\n", reading, trans);
+		digitalWrite(MOD, 1);
+		delay(10);
+		serialPutchar(fd, trans);
+		delay(40);
+		digitalWrite(MOD, 0);
+		return 1; //Something was written
+	} 
+	serialFlush(fd);
+	serialClose(fd);
+	return 0; //Nothing was written
 }
 
 
