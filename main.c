@@ -28,20 +28,17 @@ int main() {
 	//PHASE 1 (CLAIM THE FIRST BEACON)
 	while(millis() < 25000) {
 		if(lightAvg(lfd, 0) > 25) { //Activate			
-			int clearAvg = lightAvg(lfd, 0);
-			int teamAvg = lightAvg(lfd, TEAM);
-			while((clearAvg < MAGIC_CLEAR) && (teamAvg < MAGIC_TEAM)) {
-				printf("Clear avg: %d Team avg: %d\n", clearAvg, teamAvg);
+//			int clear = readTeam(lfd, 0);
+//			int team = readTeam(lfd, TEAM);
+			while((readTeam(lfd, 0) < MAGIC_CLEAR) && (readTeam(lfd, TEAM) < MAGIC_TEAM)) {
+//				printf("Clear avg: %d Team avg: %d\n", clear, team);
+				printf("Spinning\n");
 				digitalWrite(LE, 1);
 				digitalWrite(RE, 1);
 				digitalWrite(LD, 1);
 				digitalWrite(RD, 1);
-				delay(100);
+				delay(5);
 				stop();
-	//			printf("clear: %d red: %d green: %d\n", readClear(lfd), readRed(lfd), readGreen(lfd));
-				clearAvg = lightAvg(lfd, 0);
-				teamAvg = lightAvg(lfd, TEAM);
-				delay(100);
 			}
 			stop();
 			delay(WAIT);

@@ -292,6 +292,34 @@ int readGreen(int fd) {
 	return green;
 }
 
+int readTeam(int fd, int color) {
+	int ver = wiringPiI2CReadReg8(fd, 0x80 | 0x12);
+	//printf("version:%d\n", ver);
+	if(ver == 0x44) {
+		//printf("Device found\n");
+		wiringPiI2CWrite(fd, 0x80 | 0x00); //Enable
+		wiringPiI2CWrite(fd, 0x01 | 0x02); //Power on
+		int reading;
+		if(color == 0) {
+			reading = readClear(fd);
+			delay(10);
+			return reading;
+		} else if(color == 1) {
+			reading = readRed(fd);
+			delay(10);
+			return reading;
+		} else if(color == 2) {
+			reading = readGreen(fd);
+			delay(10);
+			return reading;
+		} else {
+			return -1;
+		}
+	} else {
+		return -1;
+	}
+}
+
 int lightAvg(int fd, int color) {
 	int ver = wiringPiI2CReadReg8(fd, 0x80 | 0x12);
 	//printf("version:%d\n", ver);

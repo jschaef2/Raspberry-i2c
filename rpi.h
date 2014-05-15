@@ -47,6 +47,7 @@ int avoid(int fd);
 int readClear(int fd);
 int readRed(int fd);
 int readGreen(int fd);
+int readTeam(int fd, int color);
 int lightAvg(int fd, int color);
 int claim(int fd);
 #endif
