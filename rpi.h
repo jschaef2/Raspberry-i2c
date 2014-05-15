@@ -19,7 +19,7 @@
 #define WAIT 25
 #define GO 2170
 #define TEAM 1
-#define MAGIC_CLEAR 4000	//subject to change
+#define MAGIC_CLEAR 2000	//subject to change
 #define MAGIC_TEAM 800
 //1 means green team, 2 means red team
 

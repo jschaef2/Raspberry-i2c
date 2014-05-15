@@ -210,6 +210,7 @@ int readProx(int fd) {
 int proxAvg(int fd) {
 	int i = 0;
 	int prox;
+	int sum = 0;
 	for(i; i < 30; i++) {
 	prox = readProx(fd);
 		if(prox != -1) {
@@ -302,25 +303,25 @@ int lightAvg(int fd, int color) {
 		int reading = 0;
 		int average = 0;
 		if(color == 0) {
-			for(i; i < 30; i++) {
+			for(i; i < 15; i++) {
 				reading += readClear(fd);
-				delay(10);
+				delay(5);
 			}
-			average = reading / 30;
+			average = reading / 15;
 			return average;
 		} else if(color == 1) {
-			for(i; i < 30; i++) {
+			for(i; i < 15; i++) {
 				reading += readRed(fd);
-				delay(10);
+				delay(5);
 			}
-			average = reading / 30;
+			average = reading / 15;
 			return average;
 		} else if(color == 2) {
-			for(i; i < 30; i++) {
+			for(i; i < 15; i++) {
 				reading += readGreen(fd);
-				delay(10);
+				delay(5);
 			}
-			average = reading / 30;
+			average = reading / 15;
 			return average;
 		} else {
 			return -1;

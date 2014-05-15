@@ -6,7 +6,7 @@ int main() {
 	system("sudo i2cset -y 1 0x70 0x00 0x01"); 
 	wiringPiSetup();
 	int pfd = wiringPiI2CSetup(0x13); //0x13 is determined by i2cdetect -y 1
-    wiringPiI2CWriteReg8(fd, 0x83, 0x0a); //Should increase range of the sensor
+    	wiringPiI2CWriteReg8(pfd, 0x83, 0x0a); //Should increase range of the sensor
   	wiringPiI2CWriteReg8(pfd, 0x80, 0xa8); //Get the prox ready to be read
 	
 	//LIGHT SETUP
@@ -26,7 +26,7 @@ int main() {
 	pinMode(MOD, OUTPUT); //Pin to Basys for 38KHZ Carrier
 	
 	//PHASE 1 (CLAIM THE FIRST BEACON)
-	while(millis() < 6000) {
+	while(millis() < 25000) {
 		if(lightAvg(lfd, 0) > 25) { //Activate			
 			int clearAvg = lightAvg(lfd, 0);
 			int teamAvg = lightAvg(lfd, TEAM);
@@ -36,15 +36,18 @@ int main() {
 				digitalWrite(RE, 1);
 				digitalWrite(LD, 1);
 				digitalWrite(RD, 1);
+				delay(100);
+				stop();
 	//			printf("clear: %d red: %d green: %d\n", readClear(lfd), readRed(lfd), readGreen(lfd));
 				clearAvg = lightAvg(lfd, 0);
 				teamAvg = lightAvg(lfd, TEAM);
+				delay(100);
 			}
 			stop();
 			delay(WAIT);
 			printf("Forward\n");
 			forward(75);
-			int proxCheck = evalProx(pfd);
+	/*		int proxCheck = evalProx(pfd);
 			if(proxCheck == 0) {
 //				int tag = claim();
 				int proceed = avoid(pfd);
@@ -52,7 +55,7 @@ int main() {
 					printf("avoid\n");
 					proceed = avoid(pfd);
 				}
-			}		
+			}*/		
 		}
 	}
 	stop();
